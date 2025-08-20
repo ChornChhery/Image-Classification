@@ -61,6 +61,7 @@ input_method = st.radio("Choose input method", ["Upload Image", "Paste Image URL
 
 image = None
 
+st.divider()
 if input_method == "Upload Image":
     uploaded_file = st.file_uploader("Upload an image", type=["jpg", "jpeg", "png"])
     if uploaded_file is not None:
@@ -75,22 +76,28 @@ elif input_method == "Paste Image URL":
         except Exception as e:
             st.error(f"Unable to fetch or open the image: {e}")
 
+st.divider()
+predict = st.button("Predict")
+
 if image is not None:
-    try:
-        # Resize and preprocess
-        image = image.resize((img_width, img_height))
-        img_array = tf.keras.utils.img_to_array(image)
-        img_batch = np.expand_dims(img_array, axis=0)
+    st.balloons()
+    st.divider()
+    if predict:
+        try:
+            # Resize and preprocess
+            image = image.resize((img_width, img_height))
+            img_array = tf.keras.utils.img_to_array(image)
+            img_batch = np.expand_dims(img_array, axis=0)
 
-        # Prediction
-        prediction = model.predict(img_batch)
-        score = tf.nn.softmax(prediction[0])
+            # Prediction
+            prediction = model.predict(img_batch)
+            score = tf.nn.softmax(prediction[0])
 
-        # Display results
-        st.image(image, caption="Input Image", use_container_width=True)
-        st.divider()
-        st.success(f"🧠 Result: **{data_cat[np.argmax(score)]}**")
-        st.write(f"✅ Result of Prediction: **{np.max(score) * 100:.2f}%**")
+            # Display results
+            st.image(image, caption="Input Image", use_container_width=True)
+            st.divider()
+            st.success(f"🧠 Result: **{data_cat[np.argmax(score)]}**")
+            st.write(f"✅ Result of Prediction: **{np.max(score) * 100:.2f}%**")
 
-    except Exception as e:
-        st.error(f"Error processing the image: {e}")
+        except Exception as e:
+            st.error(f"Error processing the image: {e}")
