@@ -87,10 +87,10 @@ if image is not None:
         score = tf.nn.softmax(prediction[0])
 
         # Display results
-        st.image(image, caption="Input Image", use_column_width=True)
+        st.image(image, caption="Input Image", use_container_width=True)
         st.divider()
-        st.success(f"🧠 Prediction: **{data_cat[np.argmax(score)]}**")
-        st.write(f"✅ Confidence: **{np.max(score) * 100:.2f}%**")
+        st.success(f"🧠 Result: **{data_cat[np.argmax(score)]}**")
+        st.write(f"✅ Result of Prediction: **{np.max(score) * 100:.2f}%**")
 
     except Exception as e:
         st.error(f"Error processing the image: {e}")
